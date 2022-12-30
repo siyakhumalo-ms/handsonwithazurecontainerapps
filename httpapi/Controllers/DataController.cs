@@ -34,17 +34,17 @@ namespace HttpApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostAsync()
+        public async Task<ActionResult> PostAsync(string message)
         {
             try
             {
                 CancellationTokenSource source = new CancellationTokenSource();
                 CancellationToken cancellationToken = source.Token;
                 // TODO: Replace with Message from querystring.
-                var pubsubMessage = new Message (Guid.NewGuid().ToString());
+                var pubsubMessage = new Message (message);
                 //Using Dapr SDK to publish a topic
                 await daprClient.PublishEventAsync(PUBSUB_NAME, TOPIC_NAME, pubsubMessage , cancellationToken);
-                logger.LogInformation($"Message Contents: 'TODO: MISSING'");
+                logger.LogInformation($"Message Contents: '{message}'");
                 return Ok();
             }
             catch (Exception exc)
